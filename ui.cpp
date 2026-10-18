@@ -29,10 +29,13 @@ void UI::Update()
     ImGui::Begin("Cheat Menu");
     if (ImGui::Button("Connect to Game"))
         this->mem->ConnectToGame();
+    bool isConnected = this->mem->IsConnected();
+    if (!isConnected) ImGui::BeginDisabled();
     if (ImGui::Checkbox("Enable NoClip", &this->m_vCheats["Noclip"]->m_bIsEnabled))
         this->m_vCheats["Noclip"]->SetIsEnabled(this->m_vCheats["Noclip"]->m_bIsEnabled);
     if (ImGui::Checkbox("Enable Godmode", &this->m_vCheats["Godmode"]->m_bIsEnabled))
         this->m_vCheats["Godmode"]->SetIsEnabled(this->m_vCheats["Godmode"]->m_bIsEnabled);
+    if (!isConnected) ImGui::EndDisabled();
     ImGui::End();
 
     // Rendering

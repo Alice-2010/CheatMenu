@@ -4,11 +4,14 @@
 #include <cstdint>
 #include <vector>
 #include <windows.h>
+#include <string>
 
 class Memory
 {
 public:
     void ConnectToGame();
+    bool IsConnected() const;
+    std::string GetGameSHA256();
     void *GetProcessBaseAddress();
     size_t GetPointerSize() const;
     bool ReadMemory(void *address, void *buffer, size_t size);

@@ -8,8 +8,7 @@ void Memory::ConnectToGame()
 {
     if (g_gameHandle != NULL)
     {
-        DWORD exitCode;
-        if (GetExitCodeProcess(g_gameHandle, &exitCode) && exitCode == STILL_ACTIVE)
+        if (this->IsConnected())
             return;
         CloseHandle(g_gameHandle);
         g_gameHandle = NULL;
@@ -62,6 +61,12 @@ void Memory::ConnectToGame()
         this->pointerSize = sizeof(uint32_t);
     else
         this->pointerSize = sizeof(void *);
+}
+
+bool Memory::IsConnected() const
+{
+    DWORD exitCode;
+    return g_gameHandle != NULL && GetExitCodeProcess(g_gameHandle, &exitCode) && exitCode == STILL_ACTIVE;
 }
 
 void *Memory::GetProcessBaseAddress()
