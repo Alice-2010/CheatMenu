@@ -15,17 +15,17 @@ class Cheat
 public:
     bool m_bIsEnabled = false;
 
-    Cheat(Memory *memory, std::string sha256)
+    Cheat(Memory *memory) { this->mem = memory; };
+    virtual const std::string GetCheatName() { return ""; };
+    virtual void SetIsEnabled(bool isEnabled) { this->m_bIsEnabled = isEnabled; };
+    virtual void Run() {};
+    void SetSha256(std::string sha256)
     {
-        this->mem = memory;
         if (sha256 == SHA256_STEAM)
             this->m_pBaseOffset = BASE_ADDRESS_STEAM;
         else
             this->m_pBaseOffset = 0;
-    };
-    virtual const std::string GetCheatName() { return ""; };
-    virtual void SetIsEnabled(bool isEnabled) { this->m_bIsEnabled = isEnabled; };
-    virtual void Run() {};
+    }
 
 protected:
     bool ResolveBaseAddress()

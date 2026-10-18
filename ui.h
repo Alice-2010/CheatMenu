@@ -19,6 +19,7 @@ public:
     bool m_bIsClosing = false;
 
     void Initialize(HWND);
+    void ConnectToGame();
     void Update();
     void Shutdown();
 };

@@ -14,9 +14,18 @@ void UI::Initialize(HWND hwnd)
     ImGui::StyleColorsDark();
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX12_Init(GetImGuiInitInfo());
+    this->m_vCheats["Noclip"] = new Noclip(this->mem);
+    this->m_vCheats["Godmode"] = new Godmode(this->mem);
+}
 
-    this->m_vCheats["Noclip"] = new Noclip(this->mem, "73B5DC089D2A9678A2BD519647986F23E5C705ADDDA4981029774CA179625B68");
-    this->m_vCheats["Godmode"] = new Godmode(this->mem, "73B5DC089D2A9678A2BD519647986F23E5C705ADDDA4981029774CA179625B68");
+void UI::ConnectToGame()
+{
+    this->mem->ConnectToGame();
+    if (!this->mem->IsConnected())
+        return;
+
+    std::string sha256 = this->mem->GetGameSHA256();
+    for (auto& cheat : this->m_vCheats) cheat.second->SetSha256(sha256);
 }
 
 void UI::Update()
@@ -28,13 +37,11 @@ void UI::Update()
 
     ImGui::Begin("Cheat Menu");
     if (ImGui::Button("Connect to Game"))
-        this->mem->ConnectToGame();
+        this->ConnectToGame();
     bool isConnected = this->mem->IsConnected();
     if (!isConnected) ImGui::BeginDisabled();
-    if (ImGui::Checkbox("Enable NoClip", &this->m_vCheats["Noclip"]->m_bIsEnabled))
-        this->m_vCheats["Noclip"]->SetIsEnabled(this->m_vCheats["Noclip"]->m_bIsEnabled);
-    if (ImGui::Checkbox("Enable Godmode", &this->m_vCheats["Godmode"]->m_bIsEnabled))
-        this->m_vCheats["Godmode"]->SetIsEnabled(this->m_vCheats["Godmode"]->m_bIsEnabled);
+    ImGui::Checkbox("Enable NoClip", &this->m_vCheats["Noclip"]->m_bIsEnabled);
+    ImGui::Checkbox("Enable Godmode", &this->m_vCheats["Godmode"]->m_bIsEnabled);
     if (!isConnected) ImGui::EndDisabled();
     ImGui::End();
 

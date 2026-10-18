@@ -13,7 +13,7 @@ private:
     float m_fMovementSpeed = 0.1f;
 
 public:
-    Noclip(Memory * mem, std::string sha256) : Cheat(mem, sha256) {};
+    Noclip(Memory * mem) : Cheat(mem) {};
     virtual const std::string GetCheatName() override;
     virtual void SetIsEnabled(bool isEnabled) override;
     virtual void Run() override;

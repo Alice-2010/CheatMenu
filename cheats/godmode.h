@@ -13,7 +13,7 @@ private:
     std::vector<size_t> m_vPlayer2HealthOffsets = { 0x8C, 0x6C, 0x68 };
 
 public:
-    Godmode(Memory * mem, std::string sha256) : Cheat(mem, sha256) {};
+    Godmode(Memory * mem) : Cheat(mem) {};
     virtual const std::string GetCheatName() override;
     virtual void SetIsEnabled(bool isEnabled) override;
     virtual void Run() override;
