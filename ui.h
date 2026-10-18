@@ -14,7 +14,6 @@ private:
     ImGuiContext* m_pContext = nullptr;
     Memory *mem = new Memory();
     std::map<std::string, Cheat*> m_vCheats;
-    bool m_bNoclipEnabled = false;
 
 public:
     bool m_bIsClosing = false;

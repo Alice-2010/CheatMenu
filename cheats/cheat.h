@@ -13,6 +13,8 @@
 class Cheat
 {
 public:
+    bool m_bIsEnabled = false;
+
     Cheat(Memory *memory, std::string sha256)
     {
         this->mem = memory;
@@ -40,8 +42,6 @@ protected:
         return true;
     }
 
-    bool m_bIsRunning = false;
-    bool m_bIsEnabled = false;
     void *m_pBaseAddress = NULL;
     uintptr_t m_pBaseOffset = 0;
     Memory *mem = NULL;
