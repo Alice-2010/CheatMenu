@@ -22,9 +22,15 @@ public:
     void SetSha256(std::string sha256)
     {
         if (sha256 == SHA256_STEAM)
+        {
+            printf("Detected Steam version of the game.\n");
             this->m_pBaseOffset = BASE_ADDRESS_STEAM;
+        }
         else
+        {
+            printf("Detected unknown version of the game (SHA-256: %s).\n", sha256.c_str());
             this->m_pBaseOffset = 0;
+        }
     }
 
 protected:

@@ -24,6 +24,7 @@ void Noclip::SetIsEnabled(bool isEnabled)
         )
         {
             Cheat::SetIsEnabled(false);
+            printf("Failed to resolve base address or read player position (error %lu)\n", GetLastError());
             return;
         }
     }
@@ -35,8 +36,13 @@ void Noclip::Run()
     if (this->m_bIsEnabled)
     {
         CKKeyboard keyboard;
-        if (!this->mem->ReadMemoryAtPointer(this->m_pBaseAddress, {0x18, 0xC, 0x0}, &keyboard))
+        bool success = this->mem->ReadMemoryAtPointer(this->m_pBaseAddress, {0x18, 0xC, 0x0}, &keyboard);
+        if (!success)
+        {
+            Cheat::SetIsEnabled(false);
+            printf("Failed to read keyboard state (error %lu)\n", GetLastError());
             return;
+        }
 
         if (isPressed(keyboard.m_c1))
             this->m_vLockedPosition.x += this->m_fMovementSpeed;
@@ -51,6 +57,12 @@ void Noclip::Run()
         else if (isPressed(keyboard.m_c6))
             this->m_vLockedPosition.z -= this->m_fMovementSpeed;
 
-        this->mem->WriteMemoryAtPointer(this->m_pBaseAddress, this->m_vPositionOffsets, &this->m_vLockedPosition);
+        success = this->mem->WriteMemoryAtPointer(this->m_pBaseAddress, this->m_vPositionOffsets, &this->m_vLockedPosition);
+        if (!success)
+        {
+            Cheat::SetIsEnabled(false);
+            printf("Failed to write locked position (error %lu)\n", GetLastError());
+            return;
+        }
     }
 }
